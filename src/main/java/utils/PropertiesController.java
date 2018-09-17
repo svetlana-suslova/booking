@@ -1,13 +1,13 @@
 package utils;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Log4j
+@Slf4j
 public class PropertiesController {
 
     private static final String DEFAULT_PROPERTIES_PATH = "src/test/resources/default.properties";
@@ -23,7 +23,7 @@ public class PropertiesController {
             InputStream stream = new FileInputStream(path);
             properties.load(stream);
         } catch (IOException ioException) {
-            log.error(ioException);
+            throw new IllegalStateException("Failed to load configuration file", ioException);
         }
         return properties;
     }

@@ -1,14 +1,17 @@
 import com.codeborne.selenide.WebDriverRunner;
+import logging.SelenideAllureListener;
 import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Listeners;
 import utils.BasicConfiguration;
 import utils.DriverFactory;
 import utils.PropertiesController;
 
 import java.util.Properties;
 @Log4j
+@Listeners(value = SelenideAllureListener.class)
 public class BaseTest {
 
     public static WebDriver driver;
