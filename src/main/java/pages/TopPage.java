@@ -11,6 +11,7 @@ public class TopPage {
     private SelenideElement languageSelector = $(By.xpath("//div[@id='user_form']/ul/li[2]"));
     private SelenideElement logo = $(By.xpath("//img[@id='logo_no_globe_new_logo']"));
     private SelenideElement closeFlyAlert = $(By.xpath("//div[@class='bicon bicon-aclose header-signin-prompt__close']"));
+    private SelenideElement languageEnlishUS = $(By.xpath("//div[@id='current_language_foldout']/div[1]//ul[2]/li[2]"));
 
     @Step
     public void currencySelectorBe(Condition condition){
@@ -24,6 +25,11 @@ public class TopPage {
     @Step
     public void languageSelectorClick(){
         languageSelector.click();
+    }
+
+    @Step
+    public void languageEnlishUSClick(){
+        languageEnlishUS.click();
     }
 
     @Step
