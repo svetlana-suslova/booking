@@ -4,8 +4,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.TopPage;
 
-
-
 public class BookingHappyPathTest extends BaseTest{
     private TopPage topPage = new TopPage();
 
