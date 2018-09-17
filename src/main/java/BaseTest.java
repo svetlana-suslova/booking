@@ -1,5 +1,5 @@
 import com.codeborne.selenide.WebDriverRunner;
-import logging.SelenideAllureListener;
+import utils.logging.SelenideAllureListener;
 import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterSuite;

@@ -1,4 +1,4 @@
-package logging;
+package utils.logging;
 
 import com.codeborne.selenide.Screenshots;
 import com.google.common.io.Files;

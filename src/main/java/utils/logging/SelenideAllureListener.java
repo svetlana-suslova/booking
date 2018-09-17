@@ -1,4 +1,4 @@
-package logging;
+package utils.logging;
 
 import com.codeborne.selenide.logevents.SimpleReport;
 import com.codeborne.selenide.testng.ScreenShooter;

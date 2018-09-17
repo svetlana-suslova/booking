@@ -1,4 +1,4 @@
-package logging;
+package utils.logging;
 
 import io.qameta.allure.listener.StepLifecycleListener;
 import io.qameta.allure.model.StepResult;
