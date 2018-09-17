@@ -1,3 +1,6 @@
+package utils;
+
+import com.codeborne.selenide.WebDriverRunner;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
 import lombok.extern.log4j.Log4j;
@@ -13,9 +16,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 @Log4j
 public class DriverFactory {
 
-    private static WebDriver driver;
-
-    public static void initDriver(String browser){
+    public static WebDriver initDriver(String browser){
+        WebDriver driver = null;
         if (browser.equals("chrome")) {
             ChromeDriverManager.getInstance().setup();
             log.info("Webdriver path: " + System.getProperty("webdriver.chrome.driver"));
@@ -29,5 +31,8 @@ public class DriverFactory {
             FirefoxOptions options = new FirefoxOptions();
             driver = new FirefoxDriver(options);
         }
+
+        WebDriverRunner.setWebDriver(driver);
+        return driver;
     }
 }
