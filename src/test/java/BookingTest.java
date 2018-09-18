@@ -1,7 +1,11 @@
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j;
+import org.openqa.selenium.Keys;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pages.SearchBoxPage;
 import pages.TopPage;
 
 import static org.testng.Assert.assertTrue;
@@ -9,6 +13,7 @@ import static org.testng.Assert.assertTrue;
 @Log4j
 public class BookingTest extends BaseTest{
     private TopPage topPage = new TopPage();
+    private SearchBoxPage searchBoxPage = new SearchBoxPage();
 
     @BeforeClass
     public void prepareForeTest(){
@@ -34,6 +39,27 @@ public class BookingTest extends BaseTest{
        // topPage.languageFlagShouldBe(Condition.visible);
         flagShouldBe("us");
 
+    }
+
+    @Test
+    public void testDestinationSelector(){
+        topPage.currencySelectorClick();
+        topPage.euroSelect();
+        currencyShouldBe("EUR");
+        topPage.languageSelectorClick();
+        topPage.americanEnlishSelect();
+        flagShouldBe("us");
+        searchBoxPage.typeDestination("Kiev");
+        searchBoxPage.selectDestination(0);
+        searchBoxPage.smalSearchFormShouldBe(Condition.hidden);
+    }
+
+    @Test
+    public void testDestinationSelectorByENTER(){
+        searchBoxPage.getDestinationInput().clear();
+        searchBoxPage.typeDestination("Kiev");
+        Selenide.getFocusedElement().sendKeys(Keys.ENTER);
+        searchBoxPage.smalSearchFormShouldBe(Condition.visible);
     }
 
 
