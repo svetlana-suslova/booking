@@ -51,15 +51,31 @@ public class BookingTest extends BaseTest{
         flagShouldBe("us");
         searchBoxPage.typeDestination("Kiev");
         searchBoxPage.selectDestination(0);
-        searchBoxPage.smalSearchFormShouldBe(Condition.hidden);
+        searchBoxPage.smallSearchFormShouldBe(Condition.hidden);
     }
 
     @Test
     public void testDestinationSelectorByENTER(){
+        topPage.currencySelectorClick();
+        topPage.euroSelect();
+        currencyShouldBe("EUR");
+        topPage.languageSelectorClick();
+        topPage.americanEnlishSelect();
+        flagShouldBe("us");
         searchBoxPage.getDestinationInput().clear();
         searchBoxPage.typeDestination("Kiev");
         Selenide.getFocusedElement().sendKeys(Keys.ENTER);
-        searchBoxPage.smalSearchFormShouldBe(Condition.visible);
+        searchBoxPage.smallSearchFormShouldBe(Condition.visible);
+        searchBoxPage.selectLastDateOfCurrentMonth();
+        searchBoxPage.selectAdults();
+        searchBoxPage.selectChildren();
+        searchBoxPage.selectChildAge();
+        searchBoxPage.selectRoom();
+        searchBoxPage.enableBusinessPurpose();
+        searchBoxPage.submitSearch();
+        searchBoxPage.checkInFieldShouldBe(Condition.visible);
+       // checkInDateShouldbeApplied();
+
     }
 
 
@@ -71,6 +87,12 @@ public class BookingTest extends BaseTest{
     @Step
     public void currencyShouldBe(String currency){
         assertTrue(topPage.getCurrencySign().getAttribute("value").equals(currency));
+    }
+
+    @Step
+    public void checkInDateShouldbeApplied(){
+        String expectedCheckInDate = "30 September 2018";
+        assertTrue(searchBoxPage.getCheckInField().getText().contains(expectedCheckInDate));
     }
 
 }
