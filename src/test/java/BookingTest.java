@@ -52,6 +52,16 @@ public class BookingTest extends BaseTest{
         searchBoxPage.typeDestination("Kiev");
         searchBoxPage.selectDestination(0);
         searchBoxPage.smallSearchFormShouldBe(Condition.hidden);
+        searchBoxPage.selectLastDateOfCurrentMonth();
+        searchBoxPage.bookingDetailsBlockOpen();
+        searchBoxPage.selectAdults();
+        searchBoxPage.selectChildren();
+        searchBoxPage.selectChildAge();
+        searchBoxPage.selectRoom();
+      //  searchBoxPage.searchButtonClick();
+        searchBoxPage.enableBusinessPurpose();
+        searchBoxPage.searchButtonClick();
+       // searchBoxPage.submitSearch();
     }
 
     @Test

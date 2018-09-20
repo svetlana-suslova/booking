@@ -25,8 +25,11 @@ public class SearchBoxPage {
     private SelenideElement childrenSelection = $(By.xpath("//select[@id='group_children']"));
     private SelenideElement childAgeSelection = $(By.xpath("//select[@name='age']"));
     private SelenideElement roomSelection = $(By.xpath("//select[@id='no_rooms']"));
+    private SelenideElement bookingDetails = $(By.xpath("//label[@id='xp__guests__toggle']"));
     private SelenideElement travelPurposeCheckbox = $(By.xpath("//input[@name='sb_travel_purpose']"));
+    private SelenideElement travelPurposeCheckbox2 = $(By.xpath("//form[@id='frm']/div[2]/label"));
     private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[5]/div[2]/button"));
+    private SelenideElement bigSearchButton = $(By.xpath("//form[@id='frm']/div[1]/div[4]/div[2]/button"));
 
     @Step
     public void typeDestination(String destination){
@@ -78,12 +81,28 @@ public class SearchBoxPage {
 
     @Step
     public void enableBusinessPurpose(){
-        travelPurposeCheckbox.click();
+//        if(travelPurposeCheckbox.is(Condition.visible)){
+//            travelPurposeCheckbox.click();
+//            searchButton.click();
+//        }else {
+            travelPurposeCheckbox2.click();
+//            bigSearchButton.click();
+//        }
     }
 
     @Step
     public void submitSearch(){
         searchButton.click();
     }
+
+    @Step
+    public void bookingDetailsBlockOpen(){
+        bookingDetails.click();
+    }
+    @Step
+    public void searchButtonClick(){
+        bigSearchButton.click();
+    }
+
 
 }
