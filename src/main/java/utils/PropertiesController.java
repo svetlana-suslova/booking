@@ -16,6 +16,7 @@ public class PropertiesController {
         return loadProperties(DEFAULT_PROPERTIES_PATH);
     }
 
+    ///close.sream()??
     private static Properties loadProperties(String path) {
         log.info("Reading properties: " + path);
         Properties properties = new Properties();

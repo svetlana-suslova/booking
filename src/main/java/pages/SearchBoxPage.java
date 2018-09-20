@@ -81,13 +81,7 @@ public class SearchBoxPage {
 
     @Step
     public void enableBusinessPurpose(){
-//        if(travelPurposeCheckbox.is(Condition.visible)){
-//            travelPurposeCheckbox.click();
-//            searchButton.click();
-//        }else {
             travelPurposeCheckbox2.click();
-//            bigSearchButton.click();
-//        }
     }
 
     @Step
