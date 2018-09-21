@@ -61,22 +61,22 @@ public class SearchBoxPage {
         checkInField.shouldBe(condition);
     }
     @Step
-    public void selectAdults(){
-        adultsSelection.selectOptionByValue("1");
+    public void selectAdults(String adult){
+        adultsSelection.selectOptionByValue(adult);
     }
     @Step
-    public void selectChildren(){
-        childrenSelection.selectOptionByValue("1");
-    }
-
-    @Step
-    public void selectChildAge(){
-        childAgeSelection.selectOptionByValue("5");
+    public void selectChildren(String child){
+        childrenSelection.selectOptionByValue(child);
     }
 
     @Step
-    public void selectRoom(){
-        roomSelection.selectOptionByValue("2");
+    public void selectChildAge(String age){
+        childAgeSelection.selectOptionByValue(age);
+    }
+
+    @Step
+    public void selectRoom(String room){
+        roomSelection.selectOptionByValue(room);
     }
 
     @Step

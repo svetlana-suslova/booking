@@ -16,7 +16,9 @@ import static com.codeborne.selenide.Selenide.$$;
 @Getter
 public class SearchResultsPage {
     private SelenideElement searchResultsTable = $(By.xpath("//div[@id='search_results_table']"));
-    private ElementsCollection reviewScoreBage = $$(By.xpath("//div[@id='hotellist_inner']//a[1]//span[@class='review-score-badge']"));
+    private ElementsCollection reviewScoreBage = $$(By.xpath("//div[@id='hotellist_inner']//a[1]//span[@class='review-score-badge'] " +
+            "| //div[@id='hotellist_inner']//div[@class='bui-review-score__badge']"));
+
     private SelenideElement loader = $(By.xpath("//div[@class='sr-usp-overlay__loading']"));
 
 
@@ -29,6 +31,13 @@ public class SearchResultsPage {
     public void loaderShouldBe(Condition condition){
         loader.shouldBe(condition);
     }
+
+//    @Step
+//    public void reviewScoreBageShouldBe(Condition condition){
+//        reviewScoreBage.get(0).shouldBe(condition);
+//    }
+
+
 
 
 

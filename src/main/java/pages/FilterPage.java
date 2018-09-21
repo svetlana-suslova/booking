@@ -2,6 +2,7 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
@@ -9,6 +10,7 @@ import static com.codeborne.selenide.Selenide.$;
 /**
  * Created by bonialvirto on 9/20/18.
  */
+@Getter
 public class FilterPage {
     private SelenideElement filterPriceOption1 = $(By.xpath("//div[@id='filter_price']/div[2]/a[1]"));
     private SelenideElement filterPriceOption2 = $(By.xpath("//div[@id='filter_price']/div[2]/a[2]"));
@@ -17,6 +19,16 @@ public class FilterPage {
     private SelenideElement filterReveiwOption1 = $(By.xpath("//div[@id='filter_review']/div[2]/a[1]"));
     private SelenideElement filterReveiwOption2 = $(By.xpath("//div[@id='filter_review']/div[2]/a[2]"));
 
+
+    @Step
+    public void selectOptions(){
+        filterPriceOption1.click();
+        filterPriceOption2.click();
+        filterPriceOption3.click();
+        filterPriceOption4.click();
+        filterReveiwOption1.click();
+        filterReveiwOption2.click();
+    }
 
     @Step
     public void selectPriceOption1(){
