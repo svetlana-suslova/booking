@@ -13,6 +13,9 @@ import pages.SearchBoxPage;
 import pages.SearchResultsPage;
 import pages.TopPage;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
 import static org.testng.Assert.*;
@@ -26,9 +29,43 @@ public class BookingTest extends BaseTest{
 
     @BeforeClass
     public void prepareForeTest(){
+        getCurrentMonthName();
+        getLastDateOfCurrentMonth();
+        getNextMonthName();
         openWebSite();
-      //  topPage.closeAlert();
     }
+
+    public String getCurrentMonthName(){
+        Calendar cal=Calendar.getInstance();
+        SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
+        String month_name = month_date.format(cal.getTime());
+        log.info(month_name);
+        return month_name;
+    }
+
+    public String getNextMonthName(){
+        Calendar cal=Calendar.getInstance();
+        SimpleDateFormat month_date = new SimpleDateFormat("MM");
+        String currentMonth_name = month_date.format(cal.getTime());
+        cal.set(Calendar.MONTH, Integer.parseInt(currentMonth_name) - 1 + 1);
+        month_date = new SimpleDateFormat("MMMM");
+        String month_name = month_date.format(cal.getTime());
+        log.info(month_name);
+        return month_name;
+    }
+
+    public String getLastDateOfCurrentMonth(){
+        Calendar cal=Calendar.getInstance();
+        SimpleDateFormat month_date = new SimpleDateFormat("dd");
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+        Date lastDayOfMonth = cal.getTime();
+        String date_number = month_date.format(lastDayOfMonth);
+        log.info(date_number);
+        return date_number;
+    }
+
+
+
 
     @Test
     public void testCurrencySelector(){
@@ -60,7 +97,7 @@ public class BookingTest extends BaseTest{
         flagShouldBe("us");
         searchBoxPage.typeDestination("Kiev");
         searchBoxPage.selectDestination(0);
-        searchBoxPage.selectLastDateOfCurrentMonth();
+        searchBoxPage.selectLastDateOfCurrentMonth("September");
         searchBoxPage.bookingDetailsBlockOpen();
         searchBoxPage.selectAdults("1");
         searchBoxPage.selectChildren("1");

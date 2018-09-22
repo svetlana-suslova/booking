@@ -2,10 +2,13 @@ package pages;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import org.openqa.selenium.By;
+
+import java.util.Date;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -17,7 +20,7 @@ public class SearchBoxPage {
     private SelenideElement smallSearchForm = $(By.xpath("//form[@id='frm'][contains(@class, '-small')]"));
     private ElementsCollection calendarRows = $$(By.xpath(""));
     private ElementsCollection calendarCells = $$(By.xpath(""));
-    private SelenideElement lastDateOfCurrentMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'September')]/following::tr[6]/td[7]"));
+    private SelenideElement lastDateOfCurrentMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'Sep')]/following::tr[6]/td[7]"));
     private SelenideElement firstDateOfNextMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'October')]/following::tr[2]/td[1]"));
     private SelenideElement checkInField = $(By.xpath("//form[@id='frm']//div[@data-placeholder='Check-in date']"));
     private SelenideElement checkOutField = $(By.xpath("//form[@id='frm']//div[@class='sb-date-field__display'][@data-placeholder='Check-out date']"));
@@ -42,8 +45,10 @@ public class SearchBoxPage {
     }
 
     @Step
-    public void selectLastDateOfCurrentMonth(){
-        lastDateOfCurrentMonth.click();
+    public void selectLastDateOfCurrentMonth(String month){
+
+        Selenide.$(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'" + month + "')]/following::tr[6]/td[7]")).click();
+        //lastDateOfCurrentMonth.click();
     }
 
     @Step
