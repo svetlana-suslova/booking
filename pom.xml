@@ -64,12 +64,6 @@
             <version>2.6.0</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>io.qameta.allure</groupId>-->
-            <!--<artifactId>allure-rest-assured</artifactId>-->
-            <!--<version>2.6.0</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -112,45 +106,75 @@
             <version>${webdrivermanager.version}</version>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>io.rest-assured</groupId>-->
-            <!--<artifactId>rest-assured</artifactId>-->
-            <!--<version>3.0.1</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.json</groupId>-->
-            <!--<artifactId>json</artifactId>-->
-            <!--<version>20180130</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>net.lightbody.bmp</groupId>-->
-            <!--<artifactId>browsermob-core</artifactId>-->
-            <!--<version>2.1.5</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-            <!--<groupId>com.automation-remarks</groupId>-->
-            <!--<artifactId>video-recorder-testng</artifactId>-->
-            <!--<version>LATEST</version>-->
-        <!--</dependency>-->
-
     </dependencies>
 
+
+
+
+    <!--<reporting>-->
+    <!--<excludeDefaults>true</excludeDefaults>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>ru.yandex.qatools.allure</groupId>-->
+    <!--<artifactId>allure-maven-plugin</artifactId>-->
+    <!--<version>2.5</version>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</reporting>-->
+
+
+
+
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
+                <!--<filtering>true</filtering>-->
             </testResource>
         </testResources>
 
         <plugins>
+
+            <!--replace environment.props to allure result folder-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-allure-environment</id>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/allure-results</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/test/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--generate maven.properties-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${basedir}/src/test/resources/maven.properties</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -161,6 +185,29 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <!--clean up directroris/logs-->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}</directory>
+                            <includes>
+                                <include>bonial-service-ui-tests.log</include>
+                                <!--<include>src/test/resources/maven.properties</include>-->
+                                <!--<include>src/test/resources/paramsJson.properties</include>-->
+                            </includes>
+                            <!--<excludes>-->
+                            <!--<exclude>**/important.log</exclude>-->
+                            <!--</excludes>-->
+                            <followSymlinks>false</followSymlinks>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -197,75 +244,75 @@
 
 
     <!--<build>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-compiler-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<source>1.8</source>-->
-                    <!--<target>1.8</target>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>org.apache.maven.plugins</groupId>-->
+    <!--<artifactId>maven-compiler-plugin</artifactId>-->
+    <!--<configuration>-->
+    <!--<source>1.8</source>-->
+    <!--<target>1.8</target>-->
+    <!--</configuration>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
     <!--</build>-->
 
     <!--<dependencies>-->
-        <!--<dependency>-->
-            <!--<groupId>org.testng</groupId>-->
-            <!--<artifactId>testng</artifactId>-->
-            <!--<version>6.14.3</version>-->
-        <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>org.testng</groupId>-->
+    <!--<artifactId>testng</artifactId>-->
+    <!--<version>6.14.3</version>-->
+    <!--</dependency>-->
 
-        <!--<dependency>-->
-            <!--<groupId>com.codeborne</groupId>-->
-            <!--<artifactId>selenide</artifactId>-->
-            <!--<version>4.9</version>-->
-        <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>com.codeborne</groupId>-->
+    <!--<artifactId>selenide</artifactId>-->
+    <!--<version>4.9</version>-->
+    <!--</dependency>-->
 
-        <!--<dependency>-->
-            <!--<groupId>org.seleniumhq.selenium</groupId>-->
-            <!--<artifactId>selenium-java</artifactId>-->
-            <!--<version>3.8.1</version>-->
-        <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>org.seleniumhq.selenium</groupId>-->
+    <!--<artifactId>selenium-java</artifactId>-->
+    <!--<version>3.8.1</version>-->
+    <!--</dependency>-->
 
-        <!-- logger -->
-        <!--<dependency>-->
-            <!--<groupId>org.projectlombok</groupId>-->
-            <!--<artifactId>lombok</artifactId>-->
-            <!--<version>1.16.2</version>-->
-        <!--</dependency>-->
+    <!-- logger -->
+    <!--<dependency>-->
+    <!--<groupId>org.projectlombok</groupId>-->
+    <!--<artifactId>lombok</artifactId>-->
+    <!--<version>1.16.2</version>-->
+    <!--</dependency>-->
 
-        <!--<dependency>-->
-            <!--<groupId>log4j</groupId>-->
-            <!--<artifactId>log4j</artifactId>-->
-            <!--<version>1.2.17</version>-->
-        <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>log4j</groupId>-->
+    <!--<artifactId>log4j</artifactId>-->
+    <!--<version>1.2.17</version>-->
+    <!--</dependency>-->
 
-        <!--<dependency>-->
-            <!--<groupId>io.github.bonigarcia</groupId>-->
-            <!--<artifactId>webdrivermanager</artifactId>-->
-            <!--<version>2.0.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.seleniumhq.selenium</groupId>-->
-            <!--<artifactId>selenium-chrome-driver</artifactId>-->
-            <!--<version>3.8.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.seleniumhq.selenium</groupId>-->
-            <!--<artifactId>selenium-firefox-driver</artifactId>-->
-            <!--<version>3.8.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>io.qameta.allure</groupId>-->
-            <!--<artifactId>allure-testng</artifactId>-->
-            <!--<version>2.6.0</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>io.qameta.allure</groupId>-->
-            <!--<artifactId>allure-selenide</artifactId>-->
-            <!--<version>2.6.0</version>-->
-        <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>io.github.bonigarcia</groupId>-->
+    <!--<artifactId>webdrivermanager</artifactId>-->
+    <!--<version>2.0.1</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>org.seleniumhq.selenium</groupId>-->
+    <!--<artifactId>selenium-chrome-driver</artifactId>-->
+    <!--<version>3.8.1</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>org.seleniumhq.selenium</groupId>-->
+    <!--<artifactId>selenium-firefox-driver</artifactId>-->
+    <!--<version>3.8.1</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>io.qameta.allure</groupId>-->
+    <!--<artifactId>allure-testng</artifactId>-->
+    <!--<version>2.6.0</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+    <!--<groupId>io.qameta.allure</groupId>-->
+    <!--<artifactId>allure-selenide</artifactId>-->
+    <!--<version>2.6.0</version>-->
+    <!--</dependency>-->
     <!--</dependencies>-->
 
 

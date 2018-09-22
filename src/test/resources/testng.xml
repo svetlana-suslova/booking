@@ -1,0 +1,11 @@
+<?TestingSuits version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Booking Test Suite"   preserve-order="true">
+
+    <test name="ShelfTest">
+        <classes>
+            <class name="BookingTest"></class>
+        </classes>
+    </test>
+</suite>
