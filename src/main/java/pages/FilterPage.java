@@ -18,6 +18,8 @@ public class FilterPage {
     private SelenideElement filterPriceOption4 = $(By.xpath("//div[@id='filter_price']/div[2]/a[4]"));
     private SelenideElement filterReveiwOption1 = $(By.xpath("//div[@id='filter_review']/div[2]/a[1]"));
     private SelenideElement filterReveiwOption2 = $(By.xpath("//div[@id='filter_review']/div[2]/a[2]"));
+    private SelenideElement filterAvailability = $(By.xpath("//div[@id='filter_out_of_stock']/div[2]/a"));
+
 
 
     @Step
@@ -58,5 +60,10 @@ public class FilterPage {
     @Step
     public void selectReveiwOption2(){
         filterReveiwOption2.click();
+    }
+
+    @Step
+    public void selectAvailabilityOnly(){
+        filterAvailability.click();
     }
 }

@@ -8,8 +8,6 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import org.openqa.selenium.By;
 
-import java.util.Date;
-
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
@@ -20,19 +18,27 @@ public class SearchBoxPage {
     private SelenideElement smallSearchForm = $(By.xpath("//form[@id='frm'][contains(@class, '-small')]"));
     private ElementsCollection calendarRows = $$(By.xpath(""));
     private ElementsCollection calendarCells = $$(By.xpath(""));
-    private SelenideElement lastDateOfCurrentMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'Sep')]/following::tr[6]/td[7]"));
+    private SelenideElement lastDateOfCurrentMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'September')]/following::tr[6]/td[7]"));
     private SelenideElement firstDateOfNextMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'October')]/following::tr[2]/td[1]"));
     private SelenideElement checkInField = $(By.xpath("//form[@id='frm']//div[@data-placeholder='Check-in date']"));
-    private SelenideElement checkOutField = $(By.xpath("//form[@id='frm']//div[@class='sb-date-field__display'][@data-placeholder='Check-out date']"));
+    private ElementsCollection bookingDates = $$(By.xpath("//div[@class='sb-date-field__display']"));
     private SelenideElement adultsSelection = $(By.xpath("//select[@id='group_adults']"));
+    //select[@id='group_adults']/option[@value='1' and @selected='selected'] | //label[@id='xp__guests__toggle']/span/span[1]
     private SelenideElement childrenSelection = $(By.xpath("//select[@id='group_children']"));
+    //select[@id='group_children']/option[@value='1' and @selected='selected'] | //label[@id='xp__guests__toggle']//span[2]/span
     private SelenideElement childAgeSelection = $(By.xpath("//select[@name='age']"));
     private SelenideElement roomSelection = $(By.xpath("//select[@id='no_rooms']"));
     private SelenideElement bookingDetails = $(By.xpath("//label[@id='xp__guests__toggle']"));
-    private SelenideElement travelPurposeCheckbox = $(By.xpath("//input[@name='sb_travel_purpose']"));
-    private SelenideElement travelPurposeCheckbox2 = $(By.xpath("//form[@id='frm']/div[2]/label"));
+
+    private SelenideElement travelPurposeCheckbox = $(By.xpath("//form[@id='frm']/div[2]/label"));
+    private SelenideElement travelPurposeCheckbox2 = $(By.xpath("//input[@name='sb_travel_purpose' and @checked='checked']"));
+
     private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[5]/div[2]/button"));
     private SelenideElement bigSearchButton = $(By.xpath("//form[@id='frm']/div[1]/div[4]/div[2]/button"));
+    private SelenideElement selectedDestination = $(By.xpath("//input[@id='ss' and @value='Kiev']"));
+
+    private String checkInDate;
+    private String checkOutDate;
 
     @Step
     public void typeDestination(String destination){
@@ -46,9 +52,7 @@ public class SearchBoxPage {
 
     @Step
     public void selectLastDateOfCurrentMonth(String month){
-
         Selenide.$(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'" + month + "')]/following::tr[6]/td[7]")).click();
-        //lastDateOfCurrentMonth.click();
     }
 
     @Step
@@ -59,6 +63,11 @@ public class SearchBoxPage {
     @Step
     public void smallSearchFormShouldBe(Condition condition){
         smallSearchForm.shouldBe(condition);
+    }
+
+    @Step
+    public void selectedDestinationShouldBe(String destination, Condition condition){
+        Selenide.$(By.xpath("//input[@id='ss' and @value='" + destination + "']")).shouldBe(condition);
     }
 
     @Step
@@ -86,7 +95,7 @@ public class SearchBoxPage {
 
     @Step
     public void enableBusinessPurpose(){
-            travelPurposeCheckbox2.click();
+            travelPurposeCheckbox.click();
     }
 
     @Step
@@ -102,6 +111,15 @@ public class SearchBoxPage {
     public void searchButtonClick(){
         bigSearchButton.click();
     }
+
+    public void whatIsTheCheckInDate(){
+        checkInDate = bookingDates.get(0).getText();
+    }
+
+    public void whatIsTheCheckOutDate(){
+        checkOutDate = bookingDates.get(1).getText();
+    }
+
 
 
 }
