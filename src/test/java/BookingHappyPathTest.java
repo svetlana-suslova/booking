@@ -18,7 +18,7 @@ import java.util.*;
 import static org.testng.Assert.*;
 
 @Log4j
-public class BookingTest extends BaseTest{
+public class BookingHappyPathTest extends BaseTest{
     private TopPage topPage = new TopPage();
     private SearchBoxPage searchBoxPage = new SearchBoxPage();
     private FilterPage filterPage = new FilterPage();

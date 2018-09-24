@@ -3,9 +3,9 @@
 
 <suite name="Booking Test Suite"   preserve-order="true">
 
-    <test name="ShelfTest">
+    <test name="BookingTest">
         <classes>
-            <class name="BookingTest"></class>
+            <class name="BookingHappyPathTest"></class>
         </classes>
     </test>
 </suite>
