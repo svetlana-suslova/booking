@@ -16,12 +16,10 @@ import java.util.Properties;
 public class BaseTest {
 
     public static WebDriver driver;
-   // public static BasicConfiguration configuration = new BasicConfiguration();
     Properties properties;
 
     @BeforeSuite
     public void beforeSuite() {
-       // configuration = buildBasicConfiguration();
         properties = PropertiesController.getDefaultStartUpParams();
         driver = DriverFactory.initDriver(properties.getProperty("browser"));
     }
@@ -29,18 +27,8 @@ public class BaseTest {
     protected void openWebSite(){
         String url = properties.getProperty("url");
         driver.get(url);
-        log.info("WebSite opened: " + url);
+        log.info("Web page opening: " + url);
     }
-
-//    private BasicConfiguration buildBasicConfiguration() {
-//
-//       // properties.putAll(System.getProperties());
-//
-//        BasicConfiguration configs = new BasicConfiguration();
-//        configs.setBrowser(properties.getProperty("browser"));
-//        configs.setUrl(properties.getProperty("url"));
-//        return configs;
-//    }
 
     @AfterSuite
     public void afterSuite() {

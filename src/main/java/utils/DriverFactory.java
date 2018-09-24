@@ -25,11 +25,8 @@ public class DriverFactory {
             driver = new ChromeDriver(options);
         }
 
-        if (browser.equals("firefox")) {
-            FirefoxDriverManager.getInstance().setup();
-            log.info("Webdriver path: " + System.getProperty("webdriver.gecko.driver"));
-            FirefoxOptions options = new FirefoxOptions();
-            driver = new FirefoxDriver(options);
+        if (browser.equals("anotherBrowser")) {
+            //code for another browser set up goes here
         }
 
         WebDriverRunner.setWebDriver(driver);
