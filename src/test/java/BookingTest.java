@@ -24,7 +24,6 @@ public class BookingTest extends BaseTest{
     private FilterPage filterPage = new FilterPage();
     private SearchResultsPage searchResultsPage = new SearchResultsPage();
 
-
     private String currentMonthName;
     private String lastDateOfCurrentMonth;
     private String nextMonthName;
@@ -46,34 +45,6 @@ public class BookingTest extends BaseTest{
         js.executeScript("window.localStorage.clear();");
         openWebSite();
     }
-
-
-    public void getCurrentMonthName(){
-        Formatter f = new Formatter();
-        Calendar cal=Calendar.getInstance();
-        currentMonthName = f.format("%tb", cal).toString();
-        log.info("Current month: " + currentMonthName);
-    }
-
-    public void getNextMonthName(){
-        Calendar cal=Calendar.getInstance();
-        SimpleDateFormat month_date = new SimpleDateFormat("MM");
-        String currentMonth_name = month_date.format(cal.getTime());
-        cal.set(Calendar.MONTH, Integer.parseInt(currentMonth_name) - 1 + 1);
-        Formatter f = new Formatter();
-        nextMonthName = f.format("%tb", cal).toString();
-        log.info("Next month: " + nextMonthName);
-    }
-
-    public void getLastDateOfCurrentMonth(){
-        Calendar cal=Calendar.getInstance();
-        SimpleDateFormat month_date = new SimpleDateFormat("dd");
-        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
-        Date lastDayOfMonth = cal.getTime();
-        lastDateOfCurrentMonth = month_date.format(lastDayOfMonth);
-        log.info("Last date of current month: " + lastDateOfCurrentMonth);
-    }
-
 
     @Test
     public void testCurrencySelector(){
@@ -112,7 +83,7 @@ public class BookingTest extends BaseTest{
         adultsSelectionShouldBe("1");
         childrenSelectionShouldBe("1");
         childAgeSelectionShould("5", Condition.exist);
-        roomsSelectionShould("1", Condition.exist); //!!"2" will fail
+        roomsSelectionShould("2", Condition.exist);
         searchBoxPage.businessPurposeShouldBeEnabled(Condition.exist);
     }
 
@@ -207,8 +178,6 @@ public class BookingTest extends BaseTest{
         assertTrue(actualCheckOutDate.contains(date));
     }
 
-
-
     @Step
     public void resultsWithReviewShouldBeFound(){
         int bageCount = searchResultsPage.getReviewScoreBages().size();
@@ -263,6 +232,32 @@ public class BookingTest extends BaseTest{
     public void roomsSelectionShould(String room, Condition condition){
         Selenide.$(By.xpath("//select[@id='no_rooms']/option[@value='" + room + "' and @selected='selected']"))
                 .shouldBe(condition);
+    }
+
+    public void getCurrentMonthName(){
+        Formatter f = new Formatter();
+        Calendar cal=Calendar.getInstance();
+        currentMonthName = f.format("%tb", cal).toString();
+        log.info("Current month: " + currentMonthName);
+    }
+
+    public void getNextMonthName(){
+        Calendar cal=Calendar.getInstance();
+        SimpleDateFormat month_date = new SimpleDateFormat("MM");
+        String currentMonth_name = month_date.format(cal.getTime());
+        cal.set(Calendar.MONTH, Integer.parseInt(currentMonth_name) - 1 + 1);
+        Formatter f = new Formatter();
+        nextMonthName = f.format("%tb", cal).toString();
+        log.info("Next month: " + nextMonthName);
+    }
+
+    public void getLastDateOfCurrentMonth(){
+        Calendar cal=Calendar.getInstance();
+        SimpleDateFormat month_date = new SimpleDateFormat("dd");
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+        Date lastDayOfMonth = cal.getTime();
+        lastDateOfCurrentMonth = month_date.format(lastDayOfMonth);
+        log.info("Last date of current month: " + lastDateOfCurrentMonth);
     }
 
 
