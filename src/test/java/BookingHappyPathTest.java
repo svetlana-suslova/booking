@@ -66,7 +66,7 @@ public class BookingHappyPathTest extends BaseTest{
         topPage.languageSelectorClick();
         topPage.americanEnlishSelect();
         searchBoxPage.typeInAndSelectDestination(destination);
-        searchBoxPage.selectLastDateOfCurrentMonth("September");
+        searchBoxPage.selectLastDateOfCurrentMonth(currentMonthName);
         searchBoxPage.bookingDetailsOpen();
         searchBoxPage.selectAdults("1");
         searchBoxPage.selectChildren("1");
@@ -96,7 +96,7 @@ public class BookingHappyPathTest extends BaseTest{
         topPage.languageSelectorClick();
         topPage.americanEnlishSelect();
         searchBoxPage.typeInAndSelectDestination(destination);
-        searchBoxPage.selectLastDateOfCurrentMonth("September");
+        searchBoxPage.selectLastDateOfCurrentMonth(currentMonthName);
         searchBoxPage.searchButtonClick();
         filterPage.selectBudgetOption("1");
         filterPage.selectBudgetOption("2");
@@ -122,7 +122,7 @@ public class BookingHappyPathTest extends BaseTest{
         topPage.languageSelectorClick();
         topPage.americanEnlishSelect();
         searchBoxPage.typeInAndSelectDestination(destination);
-        searchBoxPage.selectLastDateOfCurrentMonth("September");
+        searchBoxPage.selectLastDateOfCurrentMonth(currentMonthName);
         searchBoxPage.bookingDetailsOpen();
         searchBoxPage.selectAdults("1");
         searchBoxPage.selectChildren("1");
