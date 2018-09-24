@@ -3,7 +3,9 @@ import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.FilterPage;
 import pages.SearchBoxPage;
@@ -36,6 +38,15 @@ public class BookingTest extends BaseTest{
         getNextMonthName();
         openWebSite();
     }
+
+    @BeforeMethod
+    public void clearData(){
+        driver.manage().deleteAllCookies();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.localStorage.clear();");
+        openWebSite();
+    }
+
 
     public void getCurrentMonthName(){
         Formatter f = new Formatter();
@@ -82,7 +93,6 @@ public class BookingTest extends BaseTest{
     public void testSearchBoxSubmission(){
         topPage.languageSelectorClick();
         topPage.americanEnlishSelect();
-
         searchBoxPage.typeInAndSelectDestination("Kiev");
         searchBoxPage.selectLastDateOfCurrentMonth("September");
         searchBoxPage.bookingDetailsBlockOpen();
@@ -92,7 +102,6 @@ public class BookingTest extends BaseTest{
         searchBoxPage.selectRooms("2");
         searchBoxPage.enableBusinessPurpose();
         searchBoxPage.submitSearch();
-
         searchBoxPage.whatIsTheCheckInDate();
         searchBoxPage.whatIsTheCheckOutDate();
         searchBoxPage.selectedDestinationShouldBe("Kiev", Condition.visible);
@@ -105,6 +114,31 @@ public class BookingTest extends BaseTest{
         childAgeSelectionShould("5", Condition.exist);
         roomsSelectionShould("1", Condition.exist); //!!"2" will fail
         searchBoxPage.businessPurposeShouldBeEnabled(Condition.exist);
+    }
+
+    @Test
+    public void testFiltering() {
+        topPage.currencySelectorClick();
+        topPage.euroSelect();
+        topPage.languageSelectorClick();
+        topPage.americanEnlishSelect();
+        searchBoxPage.typeInAndSelectDestination("Kiev");
+        searchBoxPage.selectLastDateOfCurrentMonth("September");
+        searchBoxPage.submitSearch();
+        filterPage.selectBudgetOption("1");
+        filterPage.selectBudgetOption("2");
+        filterPage.selectBudgetOption("3");
+        filterPage.selectBudgetOption("4");
+        filterPage.selectReviewWonderful();
+        filterPage.selectReviewVeryGood();
+        filterPage.selectAvailableOnly();
+        filterPage.budgetOptionShouldBeSelected("1","true", Condition.visible);
+        filterPage.budgetOptionShouldBeSelected("2","true", Condition.visible);
+        filterPage.budgetOptionShouldBeSelected("3","true", Condition.visible);
+        filterPage.budgetOptionShouldBeSelected("4","true", Condition.visible);
+        filterPage.reviewOptionShouldBeSelected("1","true", Condition.visible);
+        filterPage.reviewOptionShouldBeSelected("2","true", Condition.visible);
+        filterPage.availableOnlyShouldBeSelected("true", Condition.visible);
     }
 
     @Test
@@ -122,15 +156,13 @@ public class BookingTest extends BaseTest{
         searchBoxPage.selectRooms("2");
         searchBoxPage.enableBusinessPurpose();
         searchBoxPage.submitSearch();
-
-        filterPage.selectPriceOption1();
-        filterPage.selectPriceOption2();
-        filterPage.selectPriceOption3();
-        filterPage.selectPriceOption4();
-        filterPage.selectReveiwOption1();
-        filterPage.selectReveiwOption2();
-        filterPage.selectAvailabilityOnly();
-
+        filterPage.selectBudgetOption("1");
+        filterPage.selectBudgetOption("2");
+        filterPage.selectBudgetOption("3");
+        filterPage.selectBudgetOption("4");
+        filterPage.selectReviewWonderful();
+        filterPage.selectReviewVeryGood();
+        filterPage.selectAvailableOnly();
         searchResultsPage.loaderShouldBe(Condition.hidden);
 
         resultsWithReviewShouldBeFound();
@@ -139,31 +171,6 @@ public class BookingTest extends BaseTest{
         priceHoldersShouldContainCorrectCurrency(currencySign);
         searchResultsPage.resultsWithPriceShouldBeFound();
     }
-
-//    @Test
-//    public void testDestinationSelectorByENTER(){
-//        topPage.currencySelectorClick();
-//        topPage.euroSelect();
-//        currencyShouldBe("EUR");
-//        topPage.languageSelectorClick();
-//        topPage.americanEnlishSelect();
-//        flagShouldBe("us");
-//        searchBoxPage.getDestinationInput().clear();
-//        searchBoxPage.typeInAndSelectDestination("Kiev");
-//        Selenide.getFocusedElement().sendKeys(Keys.ENTER);
-//        searchBoxPage.smallSearchFormShouldBe(Condition.visible);
-//        searchBoxPage.selectLastDateOfCurrentMonth();
-//        searchBoxPage.selectAdults();
-//        searchBoxPage.selectChildren();
-//        searchBoxPage.selectChildAge();
-//        searchBoxPage.selectRooms();
-//        searchBoxPage.enableBusinessPurpose();
-//        searchBoxPage.submitSearch();
-//       // searchBoxPage.checkInFieldShouldBe(Condition.visible);
-//       // checkInDateShouldbeApplied();
-//
-//    }
-
 
     @Step
     public void flagShouldBe(String flag){
