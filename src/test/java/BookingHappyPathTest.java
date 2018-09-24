@@ -1,8 +1,6 @@
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -14,7 +12,6 @@ import pages.TopPage;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 import static org.testng.Assert.*;
 
 @Log4j
@@ -24,6 +21,7 @@ public class BookingHappyPathTest extends BaseTest{
     private FilterPage filterPage = new FilterPage();
     private SearchResultsPage searchResultsPage = new SearchResultsPage();
 
+    private String destination = "Kiev";
     private String currentMonthName;
     private String lastDateOfCurrentMonth;
     private String nextMonthName;
@@ -64,7 +62,7 @@ public class BookingHappyPathTest extends BaseTest{
     public void testSearchBoxSubmission(){
         topPage.languageSelectorClick();
         topPage.americanEnlishSelect();
-        searchBoxPage.typeInAndSelectDestination("Kiev");
+        searchBoxPage.typeInAndSelectDestination(destination);
         searchBoxPage.selectLastDateOfCurrentMonth("September");
         searchBoxPage.bookingDetailsBlockOpen();
         searchBoxPage.selectAdults("1");
@@ -75,15 +73,15 @@ public class BookingHappyPathTest extends BaseTest{
         searchBoxPage.submitSearch();
         searchBoxPage.whatIsTheCheckInDate();
         searchBoxPage.whatIsTheCheckOutDate();
-        searchBoxPage.selectedDestinationShouldBe("Kiev", Condition.visible);
+        searchBoxPage.selectedDestinationShouldBe(destination, Condition.visible);
         checkInMonthShouldBeApplied(currentMonthName);
         checkInDateShouldBeApplied(lastDateOfCurrentMonth);
         checkOutMonthShouldBeApplied(nextMonthName);
         checkOutDateShouldBeApplied("1");
-        adultsSelectionShouldBe("1");
-        childrenSelectionShouldBe("1");
-        childAgeSelectionShould("5", Condition.exist);
-        roomsSelectionShould("2", Condition.exist);
+        searchBoxPage.selectedAdultsShouldBe("1", Condition.visible);
+        searchBoxPage.selectedChildrenShouldBe("1", Condition.visible);
+        searchBoxPage.selectedChildAgeShouldBe("5", Condition.exist);
+        searchBoxPage.selectedRoomsShouldBe("2", Condition.exist);
         searchBoxPage.businessPurposeShouldBeEnabled(Condition.exist);
     }
 
@@ -93,7 +91,7 @@ public class BookingHappyPathTest extends BaseTest{
         topPage.euroSelect();
         topPage.languageSelectorClick();
         topPage.americanEnlishSelect();
-        searchBoxPage.typeInAndSelectDestination("Kiev");
+        searchBoxPage.typeInAndSelectDestination(destination);
         searchBoxPage.selectLastDateOfCurrentMonth("September");
         searchBoxPage.submitSearch();
         filterPage.selectBudgetOption("1");
@@ -113,12 +111,12 @@ public class BookingHappyPathTest extends BaseTest{
     }
 
     @Test
-    public void testDestinationSelector(){
+    public void testFoundResults(){
         topPage.currencySelectorClick();
         topPage.euroSelect();
         topPage.languageSelectorClick();
         topPage.americanEnlishSelect();
-        searchBoxPage.typeInAndSelectDestination("Kiev");
+        searchBoxPage.typeInAndSelectDestination(destination);
         searchBoxPage.selectLastDateOfCurrentMonth("September");
         searchBoxPage.bookingDetailsBlockOpen();
         searchBoxPage.selectAdults("1");
@@ -136,11 +134,12 @@ public class BookingHappyPathTest extends BaseTest{
         filterPage.selectAvailableOnly();
         searchResultsPage.loaderShouldBe(Condition.hidden);
 
-        resultsWithReviewShouldBeFound();
+
         searchResultsPage.whatIsThePriceHolderText();
+        allResultsWithCorrespondingPriceShouldBeFound();
+        minimumOneResultsWithCorrespondingReviewShouldBeFound();
         priceHoldersShouldContainCorrectWording(priceWordingUS);
         priceHoldersShouldContainCorrectCurrency(currencySign);
-        searchResultsPage.resultsWithPriceShouldBeFound();
     }
 
     @Step
@@ -152,7 +151,6 @@ public class BookingHappyPathTest extends BaseTest{
     public void currencyShouldBe(String currency){
         assertTrue(topPage.getCurrencySign().getAttribute("value").equals(currency));
     }
-
 
     @Step
     public void checkInMonthShouldBeApplied(String month){
@@ -179,12 +177,27 @@ public class BookingHappyPathTest extends BaseTest{
     }
 
     @Step
-    public void resultsWithReviewShouldBeFound(){
-        int bageCount = searchResultsPage.getReviewScoreBages().size();
-        log.info("Total review bages found on page 1: " + bageCount);
+    public void allResultsWithCorrespondingPriceShouldBeFound(){
+        int priceCount = searchResultsPage.getPriceHolders().size();
+        log.info("Total price holders found on page: " + priceCount);
+        int[] prices = new int[priceCount];
+        for (int i=0; i<priceCount; i++){
+            String price = searchResultsPage.getPriceHolders().get(i).getText()
+                    .substring(searchResultsPage.getPriceHolderText().lastIndexOf("€") + 2);
+            prices[i] = Integer.parseInt(price);
+        }
+        for (int price : prices) {
+            assertTrue(price < 205);
+        }
+    }
+
+    @Step
+    public void minimumOneResultsWithCorrespondingReviewShouldBeFound(){
+        int bageCount = searchResultsPage.getReviewBages().size();
+        log.info("Total review bages found on page: " + bageCount);
         float[] bageScores = new float[bageCount];
         for (int i=0; i<bageCount; i++){
-            String bageScore = searchResultsPage.getReviewScoreBages().get(i).getText();
+            String bageScore = searchResultsPage.getReviewBages().get(i).getText();
             bageScores[i] = Float.parseFloat(bageScore);
         }
         int result = 0;
@@ -206,32 +219,6 @@ public class BookingHappyPathTest extends BaseTest{
     @Step
     public void priceHoldersShouldContainCorrectCurrency(String currency) {
         assertTrue(searchResultsPage.getPriceHolderText().contains(currency));
-    }
-
-    @Step //to the page !!HashMap for search Box
-    public void adultsSelectionShouldBe(String adult){
-        String actualAdult = Selenide.$(By.xpath("//select[@id='group_adults']/option[@value='" + adult + "' and @selected='selected'] " +
-                "| //label[@id='xp__guests__toggle']/span/span[1]")).getText();
-        assertTrue(actualAdult.contains(adult));
-    }
-
-    @Step //to the page !!HashMap for search Box
-    public void childrenSelectionShouldBe(String child){
-        String actualChild = Selenide.$(By.xpath("//select[@id='group_children']/option[@value='" + child + "' and @selected='selected'] " +
-                "| //label[@id='xp__guests__toggle']//span[2]/span")).getText();
-        assertTrue(actualChild.contains(child));
-    }
-
-    @Step //to the page !!HashMap for search Box
-    public void childAgeSelectionShould(String age, Condition condition){
-        Selenide.$(By.xpath("//select[@name='age']/option[@value='" + age + "' and @selected='selected']"))
-                .shouldBe(condition);
-    }
-
-    @Step //to the page !!HashMap for search Box
-    public void roomsSelectionShould(String room, Condition condition){
-        Selenide.$(By.xpath("//select[@id='no_rooms']/option[@value='" + room + "' and @selected='selected']"))
-                .shouldBe(condition);
     }
 
     public void getCurrentMonthName(){
@@ -259,6 +246,4 @@ public class BookingHappyPathTest extends BaseTest{
         lastDateOfCurrentMonth = month_date.format(lastDayOfMonth);
         log.info("Last date of current month: " + lastDateOfCurrentMonth);
     }
-
-
 }

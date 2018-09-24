@@ -33,7 +33,7 @@ public class SearchBoxPage {
     private SelenideElement bookingDetails = $(By.xpath("//label[@id='xp__guests__toggle']"));
 
     private SelenideElement businessPurposeCheckbox = $(By.xpath("//form[@id='frm']/div[2]/label"));
-    private SelenideElement businessPurposeCheckboxChecked = $(By.xpath("//input[@name='sb_travel_purpose' and @checked='checked']"));
+   // private SelenideElement businessPurposeCheckboxChecked = $(By.xpath("//input[@name='sb_travel_purpose' and @checked='checked']"));
 
    // private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[5]/div[2]/button"));
     private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[1]/div[4]/div[2]/button"));
@@ -55,7 +55,8 @@ public class SearchBoxPage {
 
     @Step
     public void selectLastDateOfCurrentMonth(String month){
-        Selenide.$(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'" + month + "')]/following::tr[6]/td[7]")).click();
+        Selenide.$(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'"
+                + month + "')]/following::tr[6]/td[7]")).click();
     }
 
     @Step
@@ -68,10 +69,7 @@ public class SearchBoxPage {
         smallSearchForm.shouldBe(condition);
     }
 
-    @Step
-    public void selectedDestinationShouldBe(String destination, Condition condition){
-        Selenide.$(By.xpath("//input[@id='ss' and @value='" + destination + "']")).shouldBe(condition);
-    }
+
 
     @Step
     public void checkInFieldShouldBe(Condition condition){
@@ -126,7 +124,36 @@ public class SearchBoxPage {
     }
 
     @Step
+    public void selectedDestinationShouldBe(String destination, Condition condition){
+        Selenide.$(By.xpath("//input[@id='ss' and @value='" + destination + "']")).shouldBe(condition);
+    }
+
+    @Step
+    public void selectedAdultsShouldBe(String adult, Condition condition){
+        Selenide.$(By.xpath("//select[@id='group_adults']/option[@value='" + adult + "' and @selected='selected'] " +
+                "| //label[@id='xp__guests__toggle']/span/span[1]")).shouldBe(condition);
+    }
+
+    @Step
+    public void selectedChildrenShouldBe(String child, Condition condition) {
+        Selenide.$(By.xpath("//select[@id='group_children']/option[@value='" + child + "' and @selected='selected'] " +
+                "| //label[@id='xp__guests__toggle']//span[2]/span")).shouldBe(condition);
+    }
+
+    @Step
+    public void selectedChildAgeShouldBe(String age, Condition condition){
+        Selenide.$(By.xpath("//select[@name='age']/option[@value='" + age + "' and @selected='selected']"))
+                .shouldBe(condition);
+    }
+
+    @Step
+    public void selectedRoomsShouldBe(String room, Condition condition){
+        Selenide.$(By.xpath("//select[@id='no_rooms']/option[@value='" + room + "' and @selected='selected']"))
+                .shouldBe(condition);
+    }
+
+    @Step
     public void businessPurposeShouldBeEnabled(Condition condition){
-        businessPurposeCheckboxChecked.shouldBe(condition);
+        Selenide.$(By.xpath("//input[@name='sb_travel_purpose' and @checked='checked']")).shouldBe(condition);
     }
 }
