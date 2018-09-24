@@ -2,13 +2,10 @@ package utils;
 
 import com.codeborne.selenide.WebDriverRunner;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
 import lombok.extern.log4j.Log4j;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 /**
  * Created by bonialvirto on 9/14/18.
@@ -25,7 +22,7 @@ public class DriverFactory {
             driver = new ChromeDriver(options);
         }
 
-        if (browser.equals("anotherBrowser")) {
+        if (browser.equals("browser")) {
             //code for another browser set up goes here
         }
 
