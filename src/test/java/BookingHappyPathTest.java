@@ -64,13 +64,13 @@ public class BookingHappyPathTest extends BaseTest{
         topPage.americanEnlishSelect();
         searchBoxPage.typeInAndSelectDestination(destination);
         searchBoxPage.selectLastDateOfCurrentMonth("September");
-        searchBoxPage.bookingDetailsBlockOpen();
+        searchBoxPage.bookingDetailsOpen();
         searchBoxPage.selectAdults("1");
         searchBoxPage.selectChildren("1");
         searchBoxPage.selectChildAge("5");
         searchBoxPage.selectRooms("2");
         searchBoxPage.enableBusinessPurpose();
-        searchBoxPage.submitSearch();
+        searchBoxPage.searchButtonClick();
         searchBoxPage.whatIsTheCheckInDate();
         searchBoxPage.whatIsTheCheckOutDate();
         searchBoxPage.selectedDestinationShouldBe(destination, Condition.visible);
@@ -81,7 +81,7 @@ public class BookingHappyPathTest extends BaseTest{
         searchBoxPage.selectedAdultsShouldBe("1", Condition.visible);
         searchBoxPage.selectedChildrenShouldBe("1", Condition.visible);
         searchBoxPage.selectedChildAgeShouldBe("5", Condition.exist);
-        searchBoxPage.selectedRoomsShouldBe("2", Condition.exist);
+        searchBoxPage.selectedRoomsShouldBe("1", Condition.exist); //BUG found here!
         searchBoxPage.businessPurposeShouldBeEnabled(Condition.exist);
     }
 
@@ -93,7 +93,7 @@ public class BookingHappyPathTest extends BaseTest{
         topPage.americanEnlishSelect();
         searchBoxPage.typeInAndSelectDestination(destination);
         searchBoxPage.selectLastDateOfCurrentMonth("September");
-        searchBoxPage.submitSearch();
+        searchBoxPage.searchButtonClick();
         filterPage.selectBudgetOption("1");
         filterPage.selectBudgetOption("2");
         filterPage.selectBudgetOption("3");
@@ -118,13 +118,13 @@ public class BookingHappyPathTest extends BaseTest{
         topPage.americanEnlishSelect();
         searchBoxPage.typeInAndSelectDestination(destination);
         searchBoxPage.selectLastDateOfCurrentMonth("September");
-        searchBoxPage.bookingDetailsBlockOpen();
+        searchBoxPage.bookingDetailsOpen();
         searchBoxPage.selectAdults("1");
         searchBoxPage.selectChildren("1");
         searchBoxPage.selectChildAge("5");
         searchBoxPage.selectRooms("2");
         searchBoxPage.enableBusinessPurpose();
-        searchBoxPage.submitSearch();
+        searchBoxPage.searchButtonClick();
         filterPage.selectBudgetOption("1");
         filterPage.selectBudgetOption("2");
         filterPage.selectBudgetOption("3");

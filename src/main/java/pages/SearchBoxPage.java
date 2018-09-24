@@ -3,54 +3,21 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import org.openqa.selenium.By;
-
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 @Getter
 public class SearchBoxPage {
-    private SelenideElement destinationInput = $(By.xpath("//input[@id='ss']"));
-    private ElementsCollection searchDestinationResult = $$(By.xpath("//form[@id='frm']//ul[1]/li/b"));
-    private SelenideElement smallSearchForm = $(By.xpath("//form[@id='frm'][contains(@class, '-small')]"));
-    private ElementsCollection calendarRows = $$(By.xpath(""));
-    private ElementsCollection calendarCells = $$(By.xpath(""));
-    private SelenideElement lastDateOfCurrentMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'September')]/following::tr[6]/td[7]"));
-    private SelenideElement firstDateOfNextMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'October')]/following::tr[2]/td[1]"));
-    private SelenideElement checkInField = $(By.xpath("//form[@id='frm']//div[@data-placeholder='Check-in date']"));
     private ElementsCollection bookingDates = $$(By.xpath("//div[@class='sb-date-field__display']"));
-    private SelenideElement adults = $(By.xpath("//select[@id='group_adults']"));
-    private SelenideElement adultsSelection = $(By.xpath("//select[@id='group_adults']/option[@value='1' and @selected='selected'] | //label[@id='xp__guests__toggle']/span/span[1]"));
-    private SelenideElement children = $(By.xpath("//select[@id='group_children']"));
-    private SelenideElement childrenSelection = $(By.xpath("//select[@id='group_children']/option[@value='1' and @selected='selected'] | //label[@id='xp__guests__toggle']//span[2]/span"));
-    private SelenideElement childAge = $(By.xpath("//select[@name='age']"));
-    private SelenideElement childAgeSelection = $(By.xpath("//select[@name='age']/option[@value='5' and @selected='selected']"));
-    private SelenideElement rooms = $(By.xpath("//select[@id='no_rooms']"));
-    private SelenideElement roomsSelection = $(By.xpath("//select[@id='no_rooms']/option[@value='1' and @selected='selected']"));
-    private SelenideElement bookingDetails = $(By.xpath("//label[@id='xp__guests__toggle']"));
-
-    private SelenideElement businessPurposeCheckbox = $(By.xpath("//form[@id='frm']/div[2]/label"));
-   // private SelenideElement businessPurposeCheckboxChecked = $(By.xpath("//input[@name='sb_travel_purpose' and @checked='checked']"));
-
-   // private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[5]/div[2]/button"));
-    private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[1]/div[4]/div[2]/button"));
-    private SelenideElement selectedDestination = $(By.xpath("//input[@id='ss' and @value='Kiev']"));
-
     private String checkInDate;
     private String checkOutDate;
 
     @Step
     public void typeInAndSelectDestination(String destination){
-        destinationInput.sendKeys(destination);
-        searchDestinationResult.get(0).click();
-    }
-
-    @Step
-    public void selectDestination(int index){
-        searchDestinationResult.get(index).click();
+        Selenide.$(By.xpath("//input[@id='ss']")).sendKeys(destination);
+        Selenide.$$(By.xpath("//form[@id='frm']//ul[1]/li/b")).get(0).click();
     }
 
     @Step
@@ -60,59 +27,37 @@ public class SearchBoxPage {
     }
 
     @Step
-    public void selectFirstDateOfNextMonth(){
-        firstDateOfNextMonth.click();
-    }
-
-    @Step
-    public void smallSearchFormShouldBe(Condition condition){
-        smallSearchForm.shouldBe(condition);
-    }
-
-
-
-    @Step
-    public void checkInFieldShouldBe(Condition condition){
-        checkInField.shouldBe(condition);
-    }
-    @Step
     public void selectAdults(String adult){
-        adults.selectOptionByValue(adult);
+        Selenide.$(By.xpath("//select[@id='group_adults']")).selectOptionByValue(adult);
     }
-
 
     @Step
     public void selectChildren(String child){
-        children.selectOptionByValue(child);
+        Selenide.$(By.xpath("//select[@id='group_children']")).selectOptionByValue(child);
     }
 
     @Step
     public void selectChildAge(String age){
-        childAge.selectOptionByValue(age);
+        Selenide.$(By.xpath("//select[@name='age']")).selectOptionByValue(age);
     }
 
     @Step
     public void selectRooms(String room){
-        rooms.selectOptionByValue(room);
+        Selenide.$(By.xpath("//select[@id='no_rooms']")).selectOptionByValue(room);
     }
 
     @Step
     public void enableBusinessPurpose(){
-            businessPurposeCheckbox.click();
+        Selenide.$(By.xpath("//form[@id='frm']/div[2]/label")).click();
     }
 
-//    @Step
-//    public void submitSearch(){
-//        searchButton.click();
-//    }
-
     @Step
-    public void bookingDetailsBlockOpen(){
-        bookingDetails.click();
+    public void bookingDetailsOpen(){
+        Selenide.$(By.xpath("//label[@id='xp__guests__toggle']")).click();
     }
     @Step
-    public void submitSearch(){
-        searchButton.click();
+    public void searchButtonClick(){
+        Selenide.$(By.xpath("//form[@id='frm']/div[1]/div[4]/div[2]/button")).click();
     }
 
     public void whatIsTheCheckInDate(){
