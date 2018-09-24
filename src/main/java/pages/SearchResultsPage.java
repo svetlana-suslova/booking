@@ -35,7 +35,7 @@ public class SearchResultsPage {
 
     @Step
     public void loaderShouldBe(Condition condition){
-        loader.shouldBe(condition);
+        loader.waitUntil(condition, 6000);
     }
 
 
