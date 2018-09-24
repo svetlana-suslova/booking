@@ -76,6 +76,7 @@ public class BookingHappyPathTest extends BaseTest{
         searchBoxPage.searchButtonClick();
         searchBoxPage.whatIsTheCheckInDate();
         searchBoxPage.whatIsTheCheckOutDate();
+
         searchBoxPage.selectedDestinationShouldBe(destination, visible);
         checkInMonthShouldBeApplied(currentMonthName);
         checkInDateShouldBeApplied(lastDateOfCurrentMonth);
@@ -104,6 +105,7 @@ public class BookingHappyPathTest extends BaseTest{
         filterPage.selectReviewWonderful();
         filterPage.selectReviewVeryGood();
         filterPage.selectAvailableOnly();
+
         filterPage.budgetOptionShouldBeSelected("1","true", visible);
         filterPage.budgetOptionShouldBeSelected("2","true", visible);
         filterPage.budgetOptionShouldBeSelected("3","true", visible);
@@ -136,6 +138,7 @@ public class BookingHappyPathTest extends BaseTest{
         filterPage.selectReviewVeryGood();
         filterPage.selectAvailableOnly();
         searchResultsPage.loaderShouldBe(hidden);
+
         checkFoundResultsTitleContains(destination);
         checkVisibilityOfFoundResults();
         searchResultsPage.whatIsThePriceHolderText();
@@ -237,7 +240,7 @@ public class BookingHappyPathTest extends BaseTest{
     }
 
     private void getCurrentMonthName(){
-        Formatter f = new Formatter();
+        Formatter f = new Formatter(Locale.ENGLISH);
         Calendar cal=Calendar.getInstance();
         currentMonthName = f.format("%tb", cal).toString();
         log.info("Current month: " + currentMonthName);
@@ -245,10 +248,10 @@ public class BookingHappyPathTest extends BaseTest{
 
     private void getNextMonthName(){
         Calendar cal=Calendar.getInstance();
-        SimpleDateFormat month_date = new SimpleDateFormat("MM");
+        SimpleDateFormat month_date = new SimpleDateFormat("MM", Locale.JAPAN);
         String currentMonth_name = month_date.format(cal.getTime());
         cal.set(Calendar.MONTH, Integer.parseInt(currentMonth_name) - 1 + 1);
-        Formatter f = new Formatter();
+        Formatter f = new Formatter(Locale.ENGLISH);
         nextMonthName = f.format("%tb", cal).toString();
         log.info("Next month: " + nextMonthName);
     }
