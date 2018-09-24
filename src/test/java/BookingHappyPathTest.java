@@ -248,7 +248,7 @@ public class BookingHappyPathTest extends BaseTest{
 
     private void getNextMonthName(){
         Calendar cal=Calendar.getInstance();
-        SimpleDateFormat month_date = new SimpleDateFormat("MM", Locale.JAPAN);
+        SimpleDateFormat month_date = new SimpleDateFormat("MM");
         String currentMonth_name = month_date.format(cal.getTime());
         cal.set(Calendar.MONTH, Integer.parseInt(currentMonth_name) - 1 + 1);
         Formatter f = new Formatter(Locale.ENGLISH);
