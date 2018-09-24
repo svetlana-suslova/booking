@@ -1,6 +1,8 @@
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j;
+import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.FilterPage;
@@ -77,23 +79,50 @@ public class BookingTest extends BaseTest{
     }
 
     @Test
-    public void testDestinationSelector(){
-        topPage.currencySelectorClick();
-        topPage.euroSelect();
-        currencyShouldBe("EUR");
+    public void testSearchBoxSubmission(){
         topPage.languageSelectorClick();
         topPage.americanEnlishSelect();
-        flagShouldBe("us");
-        searchBoxPage.typeDestination("Kiev");
-        searchBoxPage.selectDestination(0);
+
+        searchBoxPage.typeInAndSelectDestination("Kiev");
         searchBoxPage.selectLastDateOfCurrentMonth("September");
         searchBoxPage.bookingDetailsBlockOpen();
         searchBoxPage.selectAdults("1");
         searchBoxPage.selectChildren("1");
         searchBoxPage.selectChildAge("5");
-        searchBoxPage.selectRoom("2");
+        searchBoxPage.selectRooms("2");
         searchBoxPage.enableBusinessPurpose();
-        searchBoxPage.searchButtonClick();
+        searchBoxPage.submitSearch();
+
+        searchBoxPage.whatIsTheCheckInDate();
+        searchBoxPage.whatIsTheCheckOutDate();
+        searchBoxPage.selectedDestinationShouldBe("Kiev", Condition.visible);
+        checkInMonthShouldBeApplied(currentMonthName);
+        checkInDateShouldBeApplied(lastDateOfCurrentMonth);
+        checkOutMonthShouldBeApplied(nextMonthName);
+        checkOutDateShouldBeApplied("1");
+        adultsSelectionShouldBe("1");
+        childrenSelectionShouldBe("1");
+        childAgeSelectionShould("5", Condition.exist);
+        roomsSelectionShould("1", Condition.exist); //!!"2" will fail
+        searchBoxPage.businessPurposeShouldBeEnabled(Condition.exist);
+    }
+
+    @Test
+    public void testDestinationSelector(){
+        topPage.currencySelectorClick();
+        topPage.euroSelect();
+        topPage.languageSelectorClick();
+        topPage.americanEnlishSelect();
+        searchBoxPage.typeInAndSelectDestination("Kiev");
+        searchBoxPage.selectLastDateOfCurrentMonth("September");
+        searchBoxPage.bookingDetailsBlockOpen();
+        searchBoxPage.selectAdults("1");
+        searchBoxPage.selectChildren("1");
+        searchBoxPage.selectChildAge("5");
+        searchBoxPage.selectRooms("2");
+        searchBoxPage.enableBusinessPurpose();
+        searchBoxPage.submitSearch();
+
         filterPage.selectPriceOption1();
         filterPage.selectPriceOption2();
         filterPage.selectPriceOption3();
@@ -101,14 +130,9 @@ public class BookingTest extends BaseTest{
         filterPage.selectReveiwOption1();
         filterPage.selectReveiwOption2();
         filterPage.selectAvailabilityOnly();
+
         searchResultsPage.loaderShouldBe(Condition.hidden);
-        searchBoxPage.selectedDestinationShouldBe("Kiev", Condition.visible);
-        searchBoxPage.whatIsTheCheckInDate();
-        searchBoxPage.whatIsTheCheckOutDate();
-        checkInMonthShouldBeApplied(currentMonthName);
-        checkInDateShouldBeApplied(lastDateOfCurrentMonth);
-        checkOutMonthShouldBeApplied(nextMonthName);
-        checkOutDateShouldBeApplied("1");
+
         resultsWithReviewShouldBeFound();
         searchResultsPage.whatIsThePriceHolderText();
         priceHoldersShouldContainCorrectWording(priceWordingUS);
@@ -125,14 +149,14 @@ public class BookingTest extends BaseTest{
 //        topPage.americanEnlishSelect();
 //        flagShouldBe("us");
 //        searchBoxPage.getDestinationInput().clear();
-//        searchBoxPage.typeDestination("Kiev");
+//        searchBoxPage.typeInAndSelectDestination("Kiev");
 //        Selenide.getFocusedElement().sendKeys(Keys.ENTER);
 //        searchBoxPage.smallSearchFormShouldBe(Condition.visible);
 //        searchBoxPage.selectLastDateOfCurrentMonth();
 //        searchBoxPage.selectAdults();
 //        searchBoxPage.selectChildren();
 //        searchBoxPage.selectChildAge();
-//        searchBoxPage.selectRoom();
+//        searchBoxPage.selectRooms();
 //        searchBoxPage.enableBusinessPurpose();
 //        searchBoxPage.submitSearch();
 //       // searchBoxPage.checkInFieldShouldBe(Condition.visible);
@@ -207,4 +231,32 @@ public class BookingTest extends BaseTest{
     public void priceHoldersShouldContainCorrectCurrency(String currency) {
         assertTrue(searchResultsPage.getPriceHolderText().contains(currency));
     }
+
+    @Step //to the page !!HashMap for search Box
+    public void adultsSelectionShouldBe(String adult){
+        String actualAdult = Selenide.$(By.xpath("//select[@id='group_adults']/option[@value='" + adult + "' and @selected='selected'] " +
+                "| //label[@id='xp__guests__toggle']/span/span[1]")).getText();
+        assertTrue(actualAdult.contains(adult));
+    }
+
+    @Step //to the page !!HashMap for search Box
+    public void childrenSelectionShouldBe(String child){
+        String actualChild = Selenide.$(By.xpath("//select[@id='group_children']/option[@value='" + child + "' and @selected='selected'] " +
+                "| //label[@id='xp__guests__toggle']//span[2]/span")).getText();
+        assertTrue(actualChild.contains(child));
+    }
+
+    @Step //to the page !!HashMap for search Box
+    public void childAgeSelectionShould(String age, Condition condition){
+        Selenide.$(By.xpath("//select[@name='age']/option[@value='" + age + "' and @selected='selected']"))
+                .shouldBe(condition);
+    }
+
+    @Step //to the page !!HashMap for search Box
+    public void roomsSelectionShould(String room, Condition condition){
+        Selenide.$(By.xpath("//select[@id='no_rooms']/option[@value='" + room + "' and @selected='selected']"))
+                .shouldBe(condition);
+    }
+
+
 }

@@ -22,27 +22,30 @@ public class SearchBoxPage {
     private SelenideElement firstDateOfNextMonth = $(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'October')]/following::tr[2]/td[1]"));
     private SelenideElement checkInField = $(By.xpath("//form[@id='frm']//div[@data-placeholder='Check-in date']"));
     private ElementsCollection bookingDates = $$(By.xpath("//div[@class='sb-date-field__display']"));
-    private SelenideElement adultsSelection = $(By.xpath("//select[@id='group_adults']"));
-    //select[@id='group_adults']/option[@value='1' and @selected='selected'] | //label[@id='xp__guests__toggle']/span/span[1]
-    private SelenideElement childrenSelection = $(By.xpath("//select[@id='group_children']"));
-    //select[@id='group_children']/option[@value='1' and @selected='selected'] | //label[@id='xp__guests__toggle']//span[2]/span
-    private SelenideElement childAgeSelection = $(By.xpath("//select[@name='age']"));
-    private SelenideElement roomSelection = $(By.xpath("//select[@id='no_rooms']"));
+    private SelenideElement adults = $(By.xpath("//select[@id='group_adults']"));
+    private SelenideElement adultsSelection = $(By.xpath("//select[@id='group_adults']/option[@value='1' and @selected='selected'] | //label[@id='xp__guests__toggle']/span/span[1]"));
+    private SelenideElement children = $(By.xpath("//select[@id='group_children']"));
+    private SelenideElement childrenSelection = $(By.xpath("//select[@id='group_children']/option[@value='1' and @selected='selected'] | //label[@id='xp__guests__toggle']//span[2]/span"));
+    private SelenideElement childAge = $(By.xpath("//select[@name='age']"));
+    private SelenideElement childAgeSelection = $(By.xpath("//select[@name='age']/option[@value='5' and @selected='selected']"));
+    private SelenideElement rooms = $(By.xpath("//select[@id='no_rooms']"));
+    private SelenideElement roomsSelection = $(By.xpath("//select[@id='no_rooms']/option[@value='1' and @selected='selected']"));
     private SelenideElement bookingDetails = $(By.xpath("//label[@id='xp__guests__toggle']"));
 
-    private SelenideElement travelPurposeCheckbox = $(By.xpath("//form[@id='frm']/div[2]/label"));
-    private SelenideElement travelPurposeCheckbox2 = $(By.xpath("//input[@name='sb_travel_purpose' and @checked='checked']"));
+    private SelenideElement businessPurposeCheckbox = $(By.xpath("//form[@id='frm']/div[2]/label"));
+    private SelenideElement businessPurposeCheckboxChecked = $(By.xpath("//input[@name='sb_travel_purpose' and @checked='checked']"));
 
-    private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[5]/div[2]/button"));
-    private SelenideElement bigSearchButton = $(By.xpath("//form[@id='frm']/div[1]/div[4]/div[2]/button"));
+   // private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[5]/div[2]/button"));
+    private SelenideElement searchButton = $(By.xpath("//form[@id='frm']/div[1]/div[4]/div[2]/button"));
     private SelenideElement selectedDestination = $(By.xpath("//input[@id='ss' and @value='Kiev']"));
 
     private String checkInDate;
     private String checkOutDate;
 
     @Step
-    public void typeDestination(String destination){
+    public void typeInAndSelectDestination(String destination){
         destinationInput.sendKeys(destination);
+        searchDestinationResult.get(0).click();
     }
 
     @Step
@@ -76,40 +79,42 @@ public class SearchBoxPage {
     }
     @Step
     public void selectAdults(String adult){
-        adultsSelection.selectOptionByValue(adult);
+        adults.selectOptionByValue(adult);
     }
+
+
     @Step
     public void selectChildren(String child){
-        childrenSelection.selectOptionByValue(child);
+        children.selectOptionByValue(child);
     }
 
     @Step
     public void selectChildAge(String age){
-        childAgeSelection.selectOptionByValue(age);
+        childAge.selectOptionByValue(age);
     }
 
     @Step
-    public void selectRoom(String room){
-        roomSelection.selectOptionByValue(room);
+    public void selectRooms(String room){
+        rooms.selectOptionByValue(room);
     }
 
     @Step
     public void enableBusinessPurpose(){
-            travelPurposeCheckbox.click();
+            businessPurposeCheckbox.click();
     }
 
-    @Step
-    public void submitSearch(){
-        searchButton.click();
-    }
+//    @Step
+//    public void submitSearch(){
+//        searchButton.click();
+//    }
 
     @Step
     public void bookingDetailsBlockOpen(){
         bookingDetails.click();
     }
     @Step
-    public void searchButtonClick(){
-        bigSearchButton.click();
+    public void submitSearch(){
+        searchButton.click();
     }
 
     public void whatIsTheCheckInDate(){
@@ -120,6 +125,8 @@ public class SearchBoxPage {
         checkOutDate = bookingDates.get(1).getText();
     }
 
-
-
+    @Step
+    public void businessPurposeShouldBeEnabled(Condition condition){
+        businessPurposeCheckboxChecked.shouldBe(condition);
+    }
 }
