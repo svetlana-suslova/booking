@@ -23,11 +23,11 @@ public class TopPage {
 
     @Step
     public void euroSelect(){
-        Selenide.$(By.xpath("//div[@id='currency_dropdown_all']/ul[2]/li[2]")).click();
+        Selenide.$(By.xpath("//div[@id='currency_dropdown_top']/ul[1]/li[2]")).click();
     }
 
     @Step
     public void americanEnlishSelect(){
-        Selenide.$(By.xpath("//div[@id='current_language_foldout']/div[2]//ul[1]/li[2]")).click();
+        Selenide.$(By.xpath("//div[@id='current_language_foldout']/div[1]//ul[2]/li[2]")).click();
     }
 }
