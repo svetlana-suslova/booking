@@ -21,9 +21,9 @@ public class SearchBoxPage {
     }
 
     @Step
-    public void selectLastDateOfCurrentMonth(String month){
+    public void selectLastDateOfCurrentMonth(String month, int row, int day){
         Selenide.$(By.xpath("//table//th[@class='c2-month-header-monthname'][contains(text(),'"
-                + month + "')]/following::tr[6]/td[7]")).click();
+                + month + "')]/following::tr[" + row + "]/td[" + day + "]")).click();
     }
 
     @Step
